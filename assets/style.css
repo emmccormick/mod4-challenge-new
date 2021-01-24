@@ -1,0 +1,24 @@
+*{
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-grid, .control {
+    display: grid;
+    padding: 10px;
+}
+
+.btn {
+    background-color: lavender;
+}
+
+.btn:hover {
+    background-color: lightpink;
+}
