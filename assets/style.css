@@ -22,3 +22,7 @@ body {
 .btn:hover {
     background-color: lightpink;
 }
+
+.hide {
+    display: none; 
+}
