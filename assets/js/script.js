@@ -3,7 +3,7 @@ var nextButton = document.getElementById('next-btn')
 var submitButton = document.getElementById('submit-btn')
 
 var questionContainerEl = document.getElementById('question-container')
-var questionResult = document.getElementById('results-container')
+var questionResultEl = document.getElementById('results-container')
 var scoreContainerEl = document.getElementById('score-container')
 
 var questionEl = document.getElementById('question')
@@ -53,7 +53,7 @@ var questionBank = [
 // GIVEN I am taking a code quiz WHEN I click the start button THEN a timer starts and I am presented with a question
 startButton.addEventListener('click', startQuiz)
 
-
+  // button to control Question flow
 nextButton.addEventListener('click', () => {
     currentQuestionIndex++
     if (currentQuestionIndex === questionBank.length) {
@@ -67,7 +67,6 @@ nextButton.addEventListener('click', () => {
 
 // starts the game -- hides start button & shows the Q; starts timer
 function startQuiz() {
-    console.log('started')
     startButton.classList.add('hide')
     questionContainerEl.classList.remove('hide')
     currentQuestionIndex = 0
@@ -76,10 +75,11 @@ function startQuiz() {
 
 };
 
+// timer function - runs & displays timer on page, executes endGame() when timer runs out
 function timerTick() {
     timer--
     timerEl.textContent = timer
-    if (timer === 0) {
+    if (timer <= 0) {
         endGame()
     }
 }
@@ -111,7 +111,7 @@ function resetState() {
     }
 }
 
-
+// found this answer using google [link it] - it sets a var for a "correct" answer but I'm not sure what the Array.from part is doing
 function checkResult(e) {
     var selectedButton = e.target
     var correct = selectedButton.dataset.correct
@@ -121,7 +121,7 @@ function checkResult(e) {
     })
     nextButton.classList.remove('hide')
 
-
+// WHEN I answer a question incorrectly THEN time is subtracted from the clock
 function setStatusClass() {
     clearStatusClass(resultsEl)
     if (correct) {
@@ -129,6 +129,7 @@ function setStatusClass() {
     }
     else {
         resultsEl.innerText ="Wrong"
+        timer = timer - 1
     }
 }
 
@@ -136,56 +137,39 @@ function clearStatusClass(resultsEl) {
     resultsEl.innerText = ""
 }
 
-
-
-
-    
-    // if (this.value == questionBank[currentQuestionIndex].correctAnswer) {
-    //     console.log(this.value)
-    //     console.log(questionBank[currentQuestionIndex].correctAnswer)
-    //     score++
-    //     currentQuestionIndex++
-    //     setNextQuestion()
-    // }
-    // else {
-    //     timer = timer - 5
-    //     currentQuestionIndex++
-    //     setNextQuestion()
-    // }
 }
+
+// WHEN all questions are answered or the timer reaches 0 THEN the game is over
+// there's currently a bug where the score keeps ticking down, I can't get the clearInterval to stop it no matter where in the code I place it
 
 function endGame() {
     questionContainerEl.classList.add('hide')
     resultsEl.classList.add('hide')
     scoreContainerEl.classList.remove('hide')
+    clearInterval(timer)
     score = timer
+    var scoreBanner = `Your Score: ${score}`
+    questionResultEl.classList.remove('hide')
+    questionResultEl.innerText = scoreBanner
 }    
-
-submitButton.addEventListener('click', saveHighScores())
+// WHEN the game is over THEN I can save my initials and score
+submitButton.addEventListener('click', saveHighScores)
 
 function saveHighScores() {
     let initials = document.getElementById('input').value.trim()
-    var HighScores = JSON.parse(localStorage.getItem("High Scores")) || []
+    var highScores = JSON.parse(localStorage.getItem("High Scores")) || []
     let newScore = {
         score: score,
         initials: initials
     }
-HighScores.push(newScore)
+highScores.push(newScore)
 
-localStorage.setItem("High Scores", JSON.stringify(HighScores))
+localStorage.setItem("High Scores", JSON.stringify(highScores))
 
-// go to new window with high scores - get the high scores out of local storage & sort based on score .sort(), forEach to put on page
-// window.location
+// go to new window with high scores (MAKE ANOTHER HTML PAGE & ANOTHER JS FOR IT, read local storage & render)- get the high scores out of local storage & sort based on score .sort(), forEach to put on page
+window.location = "./assets/scorespg.html"
     
 }
 
 
 
-// WHEN I answer a question incorrectly THEN time is subtracted from the clock
-// WHEN all questions are answered or the timer reaches 0 THEN the game is over
-// WHEN the game is over THEN I can save my initials and score
-
-
-// create another function to save scores & in that fn use setLocal, create var for high score and create var for initials 
-
-// when timer gets down to 0 or all q's answers 
