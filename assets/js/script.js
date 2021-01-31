@@ -111,7 +111,7 @@ function resetState() {
     }
 }
 
-// found this answer using google [link it] - it sets a var for a "correct" answer but I'm not sure what the Array.from part is doing
+// found this answer using google [find link] - it sets a var for a "correct" answer but I'm not sure what the Array.from part is doing
 function checkResult(e) {
     var selectedButton = e.target
     var correct = selectedButton.dataset.correct
@@ -162,14 +162,21 @@ function saveHighScores() {
         score: score,
         initials: initials
     }
-highScores.push(newScore)
 
-localStorage.setItem("High Scores", JSON.stringify(highScores))
+    highScores.push(newScore)
 
-// go to new window with high scores (MAKE ANOTHER HTML PAGE & ANOTHER JS FOR IT, read local storage & render)- get the high scores out of local storage & sort based on score .sort(), forEach to put on page
-window.location = "./assets/scorespg.html"
-    
+    localStorage.setItem("High Scores", JSON.stringify(highScores))
+
 }
+
+
+// can't get this part to work properly - start btn stops working when it's active. will fix later
+// function renderScores() {
+//     var render = JSON.parse(localStorage.getItem(highScores)
+//     resultsEl.classList.remove('hide')
+//     resultsEl.innerText = render
+// }
+
 
 
 
